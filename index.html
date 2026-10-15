@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Хөвсгөл аялал – Мөрөн сумаас эхэлье</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6f4;--surface:#fff;--ink:#12303a;--muted:#4d6870;--lake:#0e4a58;--ice:#cfe6ea;--gold:#b8761a;--line:#d4e0e0;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1d23;--surface:#12303a;--ink:#e6f0f0;--muted:#9bb5ba;--lake:#7cc3d0;--ice:#1c4450;--gold:#e0a24a;--line:#244a55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1d23;--surface:#12303a;--ink:#e6f0f0;--muted:#9bb5ba;--lake:#7cc3d0;--ice:#1c4450;--gold:#e0a24a;--line:#244a55;color-scheme:dark}
+html{scroll-padding-top:70px;scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 Manrope,"Segoe UI",Arial,sans-serif}
+h1,h2,h3{font-family:Lora,Georgia,serif;line-height:1.2;margin:0}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:.4rem}
+a{color:inherit}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:6px;align-items:center;padding:10px 4vw;background:var(--bg);border-bottom:1px solid var(--line);overflow-x:auto}
+nav b{font-family:Lora,serif;margin-right:auto;white-space:nowrap;color:var(--lake)}
+nav a{text-decoration:none;padding:6px 12px;border-radius:99px;font-weight:600;font-size:.9rem;white-space:nowrap}
+nav a:hover,nav a:focus-visible{background:var(--ice);outline:none}
+nav button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 10px;cursor:pointer}
+.hero{position:relative;background:linear-gradient(#9fd0da,#e8f3f1 62%);overflow:hidden;color:#0b2e38}
+.hero svg{display:block;width:100%;height:auto;max-height:340px}
+.hero .t{padding:clamp(28px,6vw,60px) 4vw 0;max-width:900px}
+.hero h1{font-size:clamp(2.4rem,8vw,4.6rem);font-weight:700}
+.hero p{max-width:560px;font-size:1.1rem;margin:.8rem 0 0}
+.hero .go{display:inline-block;margin-top:1rem;background:#0e4a58;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:800}
+section{padding:clamp(36px,6vw,64px) 4vw;max-width:1100px;margin:auto}
+.sub{color:var(--muted);margin:0 0 1.2rem;max-width:620px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.chip,.mo{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;border-radius:99px;cursor:pointer;font:600 .9rem Manrope,sans-serif}
+.chip[aria-pressed=true],.mo[aria-pressed=true]{background:var(--lake);color:var(--bg);border-color:var(--lake)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card .pic{position:relative;height:170px;display:flex;align-items:flex-end;padding:10px 14px;font-size:2rem}.card .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin-top:12px}.day{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}.day .e{font-size:1.8rem}.day b{display:block}.day small{color:var(--muted)}
+.card .b{padding:14px}
+.card h3{font-size:1.15rem}
+.tag{font-size:.8rem;color:var(--gold);font-weight:800}
+.card p{margin:.4rem 0;font-size:.95rem;color:var(--muted)}
+.card button{background:none;border:0;color:var(--lake);font-weight:800;cursor:pointer;padding:0}
+.more{display:none;font-size:.9rem;border-top:1px dashed var(--line);margin-top:8px;padding-top:8px}
+.more.on{display:block}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(16px,3vw,26px)}
+.big{font-family:Lora,serif;font-size:clamp(2rem,6vw,3.2rem);color:var(--lake)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:10px}
+.cols h3{font-size:1rem;font-family:Manrope,sans-serif;font-weight:800;margin-bottom:4px}
+.cols p{margin:0;color:var(--muted);font-size:.95rem}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px;background:var(--surface)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--ice)}
+label{font-weight:600;font-size:.9rem;display:block;margin-bottom:4px}
+select,input[type=number]{padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;width:100%}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px}
+.res{font-weight:800;color:var(--lake);font-size:1.15rem}
+.chk{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.chk label{display:flex;gap:8px;align-items:center;font-weight:400;background:var(--surface);border:1px solid var(--line);padding:9px 12px;border-radius:8px;margin:0;cursor:pointer}
+.sos{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.sos span{background:var(--ice);padding:8px 14px;border-radius:8px;font-weight:600}
+footer{padding:28px 4vw;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+small.n{color:var(--muted);display:block;margin-top:10px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<nav aria-label="Үндсэн цэс">
+<b>Хөвсгөл аялал</b>
+<a href="#places">Үзэх газар</a><a href="#weather">Цаг агаар</a><a href="#roads">Зам</a><a href="#tips">Бэлтгэл</a>
+<button id="theme" aria-label="Өнгөний горим солих">◐</button>
+</nav>
+
+<header class="hero">
+<div class="t">
+<h1>Хөвсгөл<br>Мөрөн сумаас эхэлье</h1>
+<p>Монголын «Хөх сувд» Хөвсгөл нуур, тайгын нутаг, цаатан иргэд. Хаашаа очих, хэзээ очих, ямар замаар явахаа нэг дор ол.</p>
+<a class="go" href="#places">Газруудыг үзэх</a>
+</div>
+<svg viewBox="0 0 800 220" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Нуур болон уулсын зураг">
+<path d="M0 120 L90 50 L170 105 L260 30 L360 110 L450 60 L560 115 L660 45 L800 120 V150 H0Z" fill="#5f8f99"/>
+<path d="M0 135 L110 85 L210 130 L320 80 L430 135 L540 90 L650 135 L800 95 V160 H0Z" fill="#2d6a45"/>
+<g fill="#1f4d33"><path d="M60 140l10-35 10 35z"/><path d="M110 142l9-30 9 30z"/><path d="M300 140l10-35 10 35z"/><path d="M520 142l9-32 9 32z"/><path d="M700 140l10-34 10 34z"/></g>
+<rect y="150" width="800" height="70" fill="#1a6f86"/>
+<path d="M0 170 Q50 164 100 170 T200 170 T300 170 T400 170 T500 170 T600 170 T700 170 T800 170" stroke="#9fd4e0" stroke-width="2" fill="none"/>
+<path d="M0 195 Q60 189 120 195 T240 195 T360 195 T480 195 T600 195 T720 195 T840 195" stroke="#7bbfd0" stroke-width="2" fill="none"/>
+</svg>
+</header>
+
+<section id="places">
+<h2>Очиж үзэх газрууд</h2>
+<p class="sub">Төрлөөр нь шүүж, дэлгэрэнгүйг нь харна уу.</p>
+<div class="chips" id="chips" role="group" aria-label="Ангилал"></div>
+<div class="grid" id="grid"></div>
+<small class="n">Зайг ойролцоогоор өгөв. Явахын өмнө жолооч, хөтөч, албан ёсны эх сурвалжаас шалгаарай.</small>
+</section>
+
+<section id="weather">
+<h2>Цаг агаар, улирал</h2>
+<p class="sub">Сараа сонгоход Хөвсгөл нутгийн ердийн температур, хийх зүйл, авч явах хувцас гарна.</p>
+<div class="panel" id="live" style="margin-bottom:22px">
+<h3>Ирэх 7 хоногийн таамаглал</h3>
+<div class="chips" id="locs" role="group" aria-label="Байршил" style="margin:10px 0 0"></div>
+<div id="now" class="big" style="margin-top:8px">Ачаалж байна…</div>
+<div class="days" id="days"></div>
+<small class="n" id="src"></small>
+</div>
+<h3 style="margin-bottom:8px">Сар бүрийн ердийн байдал</h3>
+<div class="chips" id="months" role="group" aria-label="Сар"></div>
+<div class="panel">
+<div class="big" id="temp"></div>
+<div class="cols">
+<div><h3>Нуур ямар байдаг вэ</h3><p id="lake"></p></div>
+<div><h3>Хийх боломжтой зүйл</h3><p id="do"></p></div>
+<div><h3>Авч явах хувцас</h3><p id="wear"></p></div>
+</div>
+<small class="n">Температур нь олон жилийн ойролцоо дундаж (шөнийн хамгийн нам – өдрийн хамгийн өндөр). Тухайн өдрийн бодит төлөвийг Цаг уурын ерөнхий газрын мэдээгээр лавлаарай.</small>
+</div>
+</section>
+
+<section id="roads">
+<h2>Зам, зай</h2>
+<p class="sub">Улаанбаатараас Мөрөн, Мөрнөөс нуур хүртэлх үндсэн чиглэлүүд.</p>
+<div class="scroll"><table>
+<thead><tr><th>Чиглэл</th><th>Ойролцоо зай</th><th>Зам</th></tr></thead>
+<tbody>
+<tr><td>Улаанбаатар → Мөрөн</td><td>~670 км</td><td>Ихэвчлэн хатуу хучилттай зам, зарим хэсэгт засвартай байж болно</td></tr>
+<tr><td>Мөрөн → Хатгал</td><td>~100 км</td><td>Асфальт зам</td></tr>
+<tr><td>Хатгал → Хөвсгөл нуурын баруун эрэг</td><td>~20–100 км</td><td>Шороон зам, борооны дараа хүнд, 4x4 тохиромжтой</td></tr>
+<tr><td>Хатгал → Ханх (нуурын хойд хэсэг)</td><td>~200 км</td><td>Шороон зам, цаг хугацаа их орно</td></tr>
+</tbody></table></div>
+<div class="panel" style="margin-top:18px">
+<h3>Аяллын хугацаа бодогч</h3>
+<div class="form">
+<div><label for="dist">Зай (км)</label><input id="dist" type="number" min="1" value="100"></div>
+<div><label for="mode">Зам / тээвэр</label>
+<select id="mode"><option value="70">Асфальт зам (~70 км/ц)</option><option value="30">Шороон зам (~30 км/ц)</option><option value="15">Хүнд зам, бороотой (~15 км/ц)</option></select></div>
+<div><label for="stops">Амралт, зогсолт (цаг)</label><input id="stops" type="number" min="0" step="0.5" value="0.5"></div>
+</div>
+<div class="res" id="eta"></div>
+<small class="n">Тооцоо ойролцоо. Явахаасаа өмнө зам тээврийн мэдээлэл, шатахууны цэгийг лавлаарай.</small>
+</div>
+<div class="sos" aria-label="Яаралтай дугаар"><span>Цагдаа 102</span><span>Гал түймэр 101</span><span>Түргэн тусламж 103</span><span>Онцгой байдал 105</span></div>
+</section>
+
+<section id="tips">
+<h2>Аяллын бэлтгэлийн жагсаалт</h2>
+<p class="sub">Тэмдэглэсэн зүйл таны хөтөч дээр хадгалагдана.</p>
+<ul class="chk" id="chk"></ul>
+</section>
+
+<footer>Хөвсгөл аймгийн Мөрөн сумын сурагчийн хийсэн вэбсайт · Мэдээллийн технологийн олимпиад</footer>
+
+<script>
+var places=[
+{n:"Хөвсгөл нуур",img:"khuvsgul-nuur.jpg",c:"Нуур",e:"🌊",col:"#1a6f86",d:"Монголын хамгийн гүн цэнгэг нуур. Хойноо Дархадын хотгор, урд Хатгал суурин.",m:"Нуурт уул ширэнгэ, талын зэрэгцэж, усан онгоц, морин аялал, хөлөг завь хийж болно. Зуны оргил үед байр дүүрдэг тул урьдчилж захиална."},
+{n:"Хатгал суурин",img:"hatgal.jpg",c:"Түүх соёл",e:"🏘️",col:"#8a5a2b",d:"Нуурын өмнөд үүд хаалга. Ихэнх жуулчин эндээс аяллаа эхэлдэг.",m:"Хоол, шатахуун, хөтөч, морь, завь түрээс. Нуур руу гарахаасаа өмнө хэрэгцээт зүйлээ эндээс бүрдүүлнэ."},
+{n:"Дархадын хотгор",img:"darkhad.jpg",c:"Байгаль",e:"🏔️",col:"#2d6a45",d:"Хөвсгөл нуурын баруун хойд талд өргөн уудам хотгор, олон гол нуур, намагтай.",m:"Дархад, цаатан иргэдийн нутаг. Зам хүнд тул туршлагатай жолооч, хөтөчтэй явах нь зүйтэй."},
+{n:"Цаатан иргэдийн нутаг",img:"tsaatan.jpg",c:"Түүх соёл",e:"🦌",col:"#7a4a8a",d:"Тайгын цөөнхийн иргэд, цаа бугатай ахуйгаа хадгалсаар ирсэн.",m:"Зочлох бол хүндэтгэлтэй хандаж, зургийг зөвшөөрөлтэй авна. Орон нутгийн хөтөч түрээслэх нь хамгийн сайн."},
+{n:"Дэлгэр мөрөн гол",img:"delger-murun.jpg",c:"Байгаль",e:"🎣",col:"#2f7f8a",d:"Мөрөн хотын ойр урсдаг Хөвсгөл аймгийн томоохон гол.",m:"Хавар, намар голын эрэг дагуу алхах, зураг авахад тохиромжтой. Загасчлах бол зөвшөөрөл, хориглох хугацааг лавлаарай."},
+{n:"Мөрөн хот",img:"murun.jpg",c:"Түүх соёл",e:"🏛️",col:"#a8541f",d:"Хөвсгөл аймгийн төв. Аяллын өмнө бэлтгэл хийх, бараа бүтээгдэхүүн авах газар.",m:"Аймгийн музей, зах, зочид буудал, галт тэрэггүй ч агаарын буудалтай. Нуур руу явахын өмнө шатахуун, хүнсээ эндээс бүрдүүл."},
+{n:"Хорьдол Сарьдаг",img:"khoridol-saridag.jpg",c:"Байгаль",e:"⛰️",col:"#3d6b8f",d:"Улсын тусгай хамгаалалттай уулын бүс. Тайгын цэвэр байгаль.",m:"Хамгаалалттай бүс тул орохын өмнө зөвшөөрөл, хөтөч шаардлагатай. Эх сурвалжаас нарийн мэдээлэл авна."},
+{n:"Нуурын мөсөн аялал",img:"muson-ayalal.jpg",c:"Нуур",e:"🧊",col:"#4a90a4",d:"Өвөл нуур хөлдөж, мөс дээгүүр тэргээр, чаргаар явдаг.",m:"Мөс бүрэн тогтсон үед л аюулгүй. Орон нутгийн хөтөч, мэргэжлийн жолоочтой яваарай. Хавар мөс сулрах үед нэн болгоомжтой."}
+];
+var cats=["Бүгд","Нуур","Байгаль","Түүх соёл"],cur="Бүгд";
+function drawPlaces(){
+ var g=document.getElementById("grid");g.innerHTML="";
+ places.forEach(function(p,i){
+  if(cur!=="Бүгд"&&p.c!==cur)return;
+  var d=document.createElement("article");d.className="card";
+  d.innerHTML='<div class="pic" style="background:'+p.col+'"><img src="'+p.img+'" alt="'+p.n+'" loading="lazy" onerror="this.remove()"><span aria-hidden="true">'+p.e+'</span></div><div class="b"><span class="tag">'+p.c+'</span><h3>'+p.n+'</h3><p>'+p.d+'</p><button aria-expanded="false">Дэлгэрэнгүй</button><div class="more">'+p.m+'</div></div>';
+  var b=d.querySelector("button"),m=d.querySelector(".more");
+  b.onclick=function(){var o=m.classList.toggle("on");b.setAttribute("aria-expanded",o);b.textContent=o?"Хураах":"Дэлгэрэнгүй"};
+  g.appendChild(d);
+ });
+}
+var ch=document.getElementById("chips");
+cats.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c===cur);
+ b.onclick=function(){cur=c;[].forEach.call(ch.children,function(x){x.setAttribute("aria-pressed",x===b)});drawPlaces()};ch.appendChild(b)});
+drawPlaces();
+
+var M=[
+["1-р сар","-32°…-18°","Бүрэн хөлдсөн, зузаан мөстэй.","Мөсөн аялал, зураг авах, цас, ус.","Хэт зузаан дулаан хувцас, дулаан гутал, бээлий, малгай."],
+["2-р сар","-28°…-12°","Бүрэн хөлдсөн.","Мөсөн дээгүүр явах, цаа бугын аялал.","Олон давхар дулаан хувцас, дулаан гутал."],
+["3-р сар","-20°…-3°","Хөлдсөн, мөс бат бөх.","Мөсний баяр наадам, мөсөн аялал.","Дулаан хувцас, нарны шил (цас тусгана)."],
+["4-р сар","-8°…8°","Мөс сулрах эхэлдэг, аюултай.","Аялал бага, нам гүм үе.","Салхины хувцас, ус үл нэвтрэх гутал."],
+["5-р сар","0°…16°","Мөс хайлж, нуур нээгддэг.","Эрт хаврын байгаль, шувуу ажиглах.","Дулаан куртик, борооны хувцас."],
+["6-р сар","6°…22°","Ус хүйтэн, эрэг ногоорно.","Морин аялал, алхалт, зураг авах.","Дулаан хувцас, шөнө хүйтэн тул ноосон хувцас."],
+["7-р сар","9°…24°","Усанд орох боломжтой (хүйтэн), хамгийн дулаан.","Завь, морь, явган аялал, наадам.","Хөнгөн хувцас, дулаан куртик, шавьжны эсрэг тос."],
+["8-р сар","7°…22°","Нуур тайван, олон жуулчинтай.","Явган аялал, загасчлал, зураг авах.","Хөнгөн хувцас, борооны хувцас."],
+["9-р сар","0°…15°","Намрын өнгө, тайван.","Намрын байгаль, зураг авах, алхалт.","Дулаан хувцас, малгай, бээлий."],
+["10-р сар","-9°…5°","Эрэг дээр цас орж эхэлнэ.","Нам гүм аялал, зураг авах.","Дулаан хувцас, дулаан гутал."],
+["11-р сар","-22°…-6°","Нуур хөлдөж эхэлнэ, мөс тогтворгүй.","Эрэг дагуу алхалт, ажиглалт.","Өвлийн хувцас, гутал. Мөсөн дээр гарахгүй."],
+["12-р сар","-30°…-16°","Мөс тогтсон ч бүх газар найдваргүй.","Мөсөн аялал (хөтөчтэй), өвлийн зураг.","Хамгийн дулаан хувцас, давхар бээлий."]
+];
+var LOCS=[{n:"Мөрөн",la:49.64,lo:100.16},{n:"Хатгал",la:50.44,lo:100.16},{n:"Ханх",la:51.5,lo:100.65}];
+var WC=function(c){return c===0?["☀️","Цэлмэг"]:c<=2?["🌤️","Багавтар үүлтэй"]:c===3?["☁️","Үүлэрхэг"]:c<=48?["🌫️","Манантай"]:c<=57?["🌦️","Шиврээ бороо"]:c<=67?["🌧️","Бороотой"]:c<=77?["🌨️","Цастай"]:c<=82?["🌧️","Аадар бороо"]:c<=86?["🌨️","Шуургатай цас"]:["⛈️","Аадар, аянга"]};
+var DN=["Ня","Да","Мя","Лх","Пү","Ба","Бя"];
+function loadWeather(L){
+ var now=document.getElementById("now"),box=document.getElementById("days"),src=document.getElementById("src");
+ now.textContent="Ачаалж байна…";box.innerHTML="";
+ var url="https://api.open-meteo.com/v1/forecast?latitude="+L.la+"&longitude="+L.lo+"&current=temperature_2m,weathercode,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Asia%2FUlaanbaatar";
+ fetch(url).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  var c=d.current,w=WC(c.weathercode);
+  now.textContent=L.n+": "+w[0]+" "+Math.round(c.temperature_2m)+"°C, "+w[1]+", салхи "+Math.round(c.windspeed_10m)+" км/ц";
+  d.daily.time.forEach(function(t,i){var dt=new Date(t+"T12:00:00"),x=WC(d.daily.weathercode[i]),el=document.createElement("div");el.className="day";
+   el.innerHTML="<b>"+DN[dt.getDay()]+" "+(dt.getMonth()+1)+"/"+dt.getDate()+'</b><div class="e">'+x[0]+"</div><b>"+Math.round(d.daily.temperature_2m_max[i])+"° / "+Math.round(d.daily.temperature_2m_min[i])+"°</b><small>"+d.daily.precipitation_sum[i]+" мм</small>";box.appendChild(el)});
+  src.textContent="Эх сурвалж: Open-Meteo.com. Шинэчилсэн: "+new Date().toLocaleString("mn-MN");
+ }).catch(function(){now.textContent="Таамаглал татаж чадсангүй. Интернэт холболтоо шалгаад дахин оролдоно уу. Доорх сарын ердийн мэдээллийг харна уу.";src.textContent=""});
+}
+var lc=document.getElementById("locs");
+LOCS.forEach(function(L,i){var b=document.createElement("button");b.className="chip";b.textContent=L.n;b.setAttribute("aria-pressed",i===0);
+ b.onclick=function(){[].forEach.call(lc.children,function(x){x.setAttribute("aria-pressed",x===b)});loadWeather(L)};lc.appendChild(b)});
+loadWeather(LOCS[0]);
+setInterval(function(){var a=[].findIndex.call(lc.children,function(x){return x.getAttribute("aria-pressed")==="true"});loadWeather(LOCS[a<0?0:a])},30*60*1000);
+var mo=document.getElementById("months"),mi=new Date().getMonth();
+function showMonth(i){mi=i;[].forEach.call(mo.children,function(x,j){x.setAttribute("aria-pressed",j===i)});
+ var r=M[i];document.getElementById("temp").textContent=r[0]+": "+r[1].replace(/°/g,"°C ").replace("…","…").trim();
+ document.getElementById("lake").textContent=r[2];document.getElementById("do").textContent=r[3];document.getElementById("wear").textContent=r[4]}
+M.forEach(function(r,i){var b=document.createElement("button");b.className="mo";b.textContent=(i+1)+"-р сар";b.onclick=function(){showMonth(i)};mo.appendChild(b)});
+showMonth(mi);
+
+function eta(){var d=+document.getElementById("dist").value||0,s=+document.getElementById("mode").value,p=+document.getElementById("stops").value||0;
+ var h=d/s+p,hh=Math.floor(h),mm=Math.round((h-hh)*60);if(mm===60){hh++;mm=0}
+ document.getElementById("eta").textContent="Ойролцоогоор "+hh+" цаг "+mm+" минут";}
+["dist","mode","stops"].forEach(function(id){document.getElementById(id).oninput=eta});eta();
+
+var items=["Иргэний үнэмлэх, жолооны үнэмлэх","Дулаан давхар хувцас","Борооны цув, ус үл нэвтрэх гутал","Нарны тос, нарны шил","Шавьжны эсрэг тос","Анхны тусламжийн цүнх","Цахилгаан гэрэл, цэнэглэгч","Нэмэлт цэнэг (power bank)","Шатахуун, хоол, ус нөөцлөх","Байр, хөтөчөө урьдчилан захиалах","Хог хаягдлыг буцааж авчрах уут","Камер, зураг авах хэрэгсэл"];
+var saved={};try{saved=JSON.parse(localStorage.getItem("chk")||"{}")}catch(e){}
+var ul=document.getElementById("chk");
+items.forEach(function(t,i){var li=document.createElement("li"),l=document.createElement("label"),c=document.createElement("input");
+ c.type="checkbox";c.checked=!!saved[i];c.onchange=function(){saved[i]=c.checked;try{localStorage.setItem("chk",JSON.stringify(saved))}catch(e){}};
+ l.appendChild(c);l.appendChild(document.createTextNode(t));li.appendChild(l);ul.appendChild(li)});
+
+document.getElementById("theme").onclick=function(){var r=document.documentElement,dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);r.setAttribute("data-theme",dark?"light":"dark")};
+</script>
+</body>
+</html>
