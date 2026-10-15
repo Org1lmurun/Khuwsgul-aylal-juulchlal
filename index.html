@@ -35,7 +35,7 @@ section{padding:clamp(36px,6vw,64px) 4vw;max-width:1100px;margin:auto}
 .chip[aria-pressed=true],.mo[aria-pressed=true]{background:var(--lake);color:var(--bg);border-color:var(--lake)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.card .pic{height:84px;display:flex;align-items:flex-end;padding:10px 14px;font-size:1.8rem}
+.card .pic{position:relative;height:170px;display:flex;align-items:flex-end;padding:10px 14px;font-size:2rem}.card .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin-top:12px}.day{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}.day .e{font-size:1.8rem}.day b{display:block}.day small{color:var(--muted)}
 .card .b{padding:14px}
 .card h3{font-size:1.15rem}
 .tag{font-size:.8rem;color:var(--gold);font-weight:800}
@@ -99,6 +99,14 @@ small.n{color:var(--muted);display:block;margin-top:10px}
 <section id="weather">
 <h2>Цаг агаар, улирал</h2>
 <p class="sub">Сараа сонгоход Хөвсгөл нутгийн ердийн температур, хийх зүйл, авч явах хувцас гарна.</p>
+<div class="panel" id="live" style="margin-bottom:22px">
+<h3>Ирэх 7 хоногийн таамаглал</h3>
+<div class="chips" id="locs" role="group" aria-label="Байршил" style="margin:10px 0 0"></div>
+<div id="now" class="big" style="margin-top:8px">Ачаалж байна…</div>
+<div class="days" id="days"></div>
+<small class="n" id="src"></small>
+</div>
+<h3 style="margin-bottom:8px">Сар бүрийн ердийн байдал</h3>
 <div class="chips" id="months" role="group" aria-label="Сар"></div>
 <div class="panel">
 <div class="big" id="temp"></div>
@@ -146,14 +154,14 @@ small.n{color:var(--muted);display:block;margin-top:10px}
 
 <script>
 var places=[
-{n:"Хөвсгөл нуур",c:"Нуур",e:"🌊",col:"#1a6f86",d:"Монголын хамгийн гүн цэнгэг нуур. Хойноо Дархадын хотгор, урд Хатгал суурин.",m:"Нуурт уул ширэнгэ, талын зэрэгцэж, усан онгоц, морин аялал, хөлөг завь хийж болно. Зуны оргил үед байр дүүрдэг тул урьдчилж захиална."},
-{n:"Хатгал суурин",c:"Түүх соёл",e:"🏘️",col:"#8a5a2b",d:"Нуурын өмнөд үүд хаалга. Ихэнх жуулчин эндээс аяллаа эхэлдэг.",m:"Хоол, шатахуун, хөтөч, морь, завь түрээс. Нуур руу гарахаасаа өмнө хэрэгцээт зүйлээ эндээс бүрдүүлнэ."},
-{n:"Дархадын хотгор",c:"Байгаль",e:"🏔️",col:"#2d6a45",d:"Хөвсгөл нуурын баруун хойд талд өргөн уудам хотгор, олон гол нуур, намагтай.",m:"Дархад, цаатан иргэдийн нутаг. Зам хүнд тул туршлагатай жолооч, хөтөчтэй явах нь зүйтэй."},
-{n:"Цаатан иргэдийн нутаг",c:"Түүх соёл",e:"🦌",col:"#7a4a8a",d:"Тайгын цөөнхийн иргэд, цаа бугатай ахуйгаа хадгалсаар ирсэн.",m:"Зочлох бол хүндэтгэлтэй хандаж, зургийг зөвшөөрөлтэй авна. Орон нутгийн хөтөч түрээслэх нь хамгийн сайн."},
-{n:"Дэлгэр мөрөн гол",c:"Байгаль",e:"🎣",col:"#2f7f8a",d:"Мөрөн хотын ойр урсдаг Хөвсгөл аймгийн томоохон гол.",m:"Хавар, намар голын эрэг дагуу алхах, зураг авахад тохиромжтой. Загасчлах бол зөвшөөрөл, хориглох хугацааг лавлаарай."},
-{n:"Мөрөн хот",c:"Түүх соёл",e:"🏛️",col:"#a8541f",d:"Хөвсгөл аймгийн төв. Аяллын өмнө бэлтгэл хийх, бараа бүтээгдэхүүн авах газар.",m:"Аймгийн музей, зах, зочид буудал, галт тэрэггүй ч агаарын буудалтай. Нуур руу явахын өмнө шатахуун, хүнсээ эндээс бүрдүүл."},
-{n:"Хорьдол Сарьдаг",c:"Байгаль",e:"⛰️",col:"#3d6b8f",d:"Улсын тусгай хамгаалалттай уулын бүс. Тайгын цэвэр байгаль.",m:"Хамгаалалттай бүс тул орохын өмнө зөвшөөрөл, хөтөч шаардлагатай. Эх сурвалжаас нарийн мэдээлэл авна."},
-{n:"Нуурын мөсөн аялал",c:"Нуур",e:"🧊",col:"#4a90a4",d:"Өвөл нуур хөлдөж, мөс дээгүүр тэргээр, чаргаар явдаг.",m:"Мөс бүрэн тогтсон үед л аюулгүй. Орон нутгийн хөтөч, мэргэжлийн жолоочтой яваарай. Хавар мөс сулрах үед нэн болгоомжтой."}
+{n:"Хөвсгөл нуур",img:"images/khuvsgul-nuur.jpg",c:"Нуур",e:"🌊",col:"#1a6f86",d:"Монголын хамгийн гүн цэнгэг нуур. Хойноо Дархадын хотгор, урд Хатгал суурин.",m:"Нуурт уул ширэнгэ, талын зэрэгцэж, усан онгоц, морин аялал, хөлөг завь хийж болно. Зуны оргил үед байр дүүрдэг тул урьдчилж захиална."},
+{n:"Хатгал суурин",img:"images/hatgal.jpg",c:"Түүх соёл",e:"🏘️",col:"#8a5a2b",d:"Нуурын өмнөд үүд хаалга. Ихэнх жуулчин эндээс аяллаа эхэлдэг.",m:"Хоол, шатахуун, хөтөч, морь, завь түрээс. Нуур руу гарахаасаа өмнө хэрэгцээт зүйлээ эндээс бүрдүүлнэ."},
+{n:"Дархадын хотгор",img:"images/darkhad.jpg",c:"Байгаль",e:"🏔️",col:"#2d6a45",d:"Хөвсгөл нуурын баруун хойд талд өргөн уудам хотгор, олон гол нуур, намагтай.",m:"Дархад, цаатан иргэдийн нутаг. Зам хүнд тул туршлагатай жолооч, хөтөчтэй явах нь зүйтэй."},
+{n:"Цаатан иргэдийн нутаг",img:"images/tsaatan.jpg",c:"Түүх соёл",e:"🦌",col:"#7a4a8a",d:"Тайгын цөөнхийн иргэд, цаа бугатай ахуйгаа хадгалсаар ирсэн.",m:"Зочлох бол хүндэтгэлтэй хандаж, зургийг зөвшөөрөлтэй авна. Орон нутгийн хөтөч түрээслэх нь хамгийн сайн."},
+{n:"Дэлгэр мөрөн гол",img:"images/delger-murun.jpg",c:"Байгаль",e:"🎣",col:"#2f7f8a",d:"Мөрөн хотын ойр урсдаг Хөвсгөл аймгийн томоохон гол.",m:"Хавар, намар голын эрэг дагуу алхах, зураг авахад тохиромжтой. Загасчлах бол зөвшөөрөл, хориглох хугацааг лавлаарай."},
+{n:"Мөрөн хот",img:"images/murun.jpg",c:"Түүх соёл",e:"🏛️",col:"#a8541f",d:"Хөвсгөл аймгийн төв. Аяллын өмнө бэлтгэл хийх, бараа бүтээгдэхүүн авах газар.",m:"Аймгийн музей, зах, зочид буудал, галт тэрэггүй ч агаарын буудалтай. Нуур руу явахын өмнө шатахуун, хүнсээ эндээс бүрдүүл."},
+{n:"Хорьдол Сарьдаг",img:"images/khoridol-saridag.jpg",c:"Байгаль",e:"⛰️",col:"#3d6b8f",d:"Улсын тусгай хамгаалалттай уулын бүс. Тайгын цэвэр байгаль.",m:"Хамгаалалттай бүс тул орохын өмнө зөвшөөрөл, хөтөч шаардлагатай. Эх сурвалжаас нарийн мэдээлэл авна."},
+{n:"Нуурын мөсөн аялал",img:"images/muson-ayalal.jpg",c:"Нуур",e:"🧊",col:"#4a90a4",d:"Өвөл нуур хөлдөж, мөс дээгүүр тэргээр, чаргаар явдаг.",m:"Мөс бүрэн тогтсон үед л аюулгүй. Орон нутгийн хөтөч, мэргэжлийн жолоочтой яваарай. Хавар мөс сулрах үед нэн болгоомжтой."}
 ];
 var cats=["Бүгд","Нуур","Байгаль","Түүх соёл"],cur="Бүгд";
 function drawPlaces(){
@@ -161,7 +169,7 @@ function drawPlaces(){
  places.forEach(function(p,i){
   if(cur!=="Бүгд"&&p.c!==cur)return;
   var d=document.createElement("article");d.className="card";
-  d.innerHTML='<div class="pic" style="background:'+p.col+'" aria-hidden="true">'+p.e+'</div><div class="b"><span class="tag">'+p.c+'</span><h3>'+p.n+'</h3><p>'+p.d+'</p><button aria-expanded="false">Дэлгэрэнгүй</button><div class="more">'+p.m+'</div></div>';
+  d.innerHTML='<div class="pic" style="background:'+p.col+'"><img src="'+p.img+'" alt="'+p.n+'" loading="lazy" onerror="this.remove()"><span aria-hidden="true">'+p.e+'</span></div><div class="b"><span class="tag">'+p.c+'</span><h3>'+p.n+'</h3><p>'+p.d+'</p><button aria-expanded="false">Дэлгэрэнгүй</button><div class="more">'+p.m+'</div></div>';
   var b=d.querySelector("button"),m=d.querySelector(".more");
   b.onclick=function(){var o=m.classList.toggle("on");b.setAttribute("aria-expanded",o);b.textContent=o?"Хураах":"Дэлгэрэнгүй"};
   g.appendChild(d);
@@ -186,6 +194,26 @@ var M=[
 ["11-р сар","-22°…-6°","Нуур хөлдөж эхэлнэ, мөс тогтворгүй.","Эрэг дагуу алхалт, ажиглалт.","Өвлийн хувцас, гутал. Мөсөн дээр гарахгүй."],
 ["12-р сар","-30°…-16°","Мөс тогтсон ч бүх газар найдваргүй.","Мөсөн аялал (хөтөчтэй), өвлийн зураг.","Хамгийн дулаан хувцас, давхар бээлий."]
 ];
+var LOCS=[{n:"Мөрөн",la:49.64,lo:100.16},{n:"Хатгал",la:50.44,lo:100.16},{n:"Ханх",la:51.5,lo:100.65}];
+var WC=function(c){return c===0?["☀️","Цэлмэг"]:c<=2?["🌤️","Багавтар үүлтэй"]:c===3?["☁️","Үүлэрхэг"]:c<=48?["🌫️","Манантай"]:c<=57?["🌦️","Шиврээ бороо"]:c<=67?["🌧️","Бороотой"]:c<=77?["🌨️","Цастай"]:c<=82?["🌧️","Аадар бороо"]:c<=86?["🌨️","Шуургатай цас"]:["⛈️","Аадар, аянга"]};
+var DN=["Ня","Да","Мя","Лх","Пү","Ба","Бя"];
+function loadWeather(L){
+ var now=document.getElementById("now"),box=document.getElementById("days"),src=document.getElementById("src");
+ now.textContent="Ачаалж байна…";box.innerHTML="";
+ var url="https://api.open-meteo.com/v1/forecast?latitude="+L.la+"&longitude="+L.lo+"&current=temperature_2m,weathercode,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Asia%2FUlaanbaatar";
+ fetch(url).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  var c=d.current,w=WC(c.weathercode);
+  now.textContent=L.n+": "+w[0]+" "+Math.round(c.temperature_2m)+"°C, "+w[1]+", салхи "+Math.round(c.windspeed_10m)+" км/ц";
+  d.daily.time.forEach(function(t,i){var dt=new Date(t+"T12:00:00"),x=WC(d.daily.weathercode[i]),el=document.createElement("div");el.className="day";
+   el.innerHTML="<b>"+DN[dt.getDay()]+" "+(dt.getMonth()+1)+"/"+dt.getDate()+'</b><div class="e">'+x[0]+"</div><b>"+Math.round(d.daily.temperature_2m_max[i])+"° / "+Math.round(d.daily.temperature_2m_min[i])+"°</b><small>"+d.daily.precipitation_sum[i]+" мм</small>";box.appendChild(el)});
+  src.textContent="Эх сурвалж: Open-Meteo.com. Шинэчилсэн: "+new Date().toLocaleString("mn-MN");
+ }).catch(function(){now.textContent="Таамаглал татаж чадсангүй. Интернэт холболтоо шалгаад дахин оролдоно уу. Доорх сарын ердийн мэдээллийг харна уу.";src.textContent=""});
+}
+var lc=document.getElementById("locs");
+LOCS.forEach(function(L,i){var b=document.createElement("button");b.className="chip";b.textContent=L.n;b.setAttribute("aria-pressed",i===0);
+ b.onclick=function(){[].forEach.call(lc.children,function(x){x.setAttribute("aria-pressed",x===b)});loadWeather(L)};lc.appendChild(b)});
+loadWeather(LOCS[0]);
+setInterval(function(){var a=[].findIndex.call(lc.children,function(x){return x.getAttribute("aria-pressed")==="true"});loadWeather(LOCS[a<0?0:a])},30*60*1000);
 var mo=document.getElementById("months"),mi=new Date().getMonth();
 function showMonth(i){mi=i;[].forEach.call(mo.children,function(x,j){x.setAttribute("aria-pressed",j===i)});
  var r=M[i];document.getElementById("temp").textContent=r[0]+": "+r[1].replace(/°/g,"°C ").replace("…","…").trim();
